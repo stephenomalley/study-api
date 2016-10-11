@@ -1,4 +1,4 @@
-from studies_api.app import db
+from studies_api import db
 
 
 def get_all_studies():
@@ -6,6 +6,7 @@ def get_all_studies():
     Retrieves all the study objects within the collection
     :return: a list of dictionaries [empty dictionary if no data in that collections
     """
+    print db
     return db.studies.find()
 
 

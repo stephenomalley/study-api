@@ -8,7 +8,7 @@ from studies_api.fields.study import study_fields
 class TestApiMixin(object):
     def setUp(self):
         # os.environ["MONGOHQ_URL"] = "mongodb://localhost:27017/test"
-        from studies_api.app import app as studies_api
+        from studies_api import app as studies_api
         self.app = studies_api.test_client()
 
     def tearDown(self):

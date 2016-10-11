@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from studies_api.app import api
+from studies_api import api
 
 
 class User(Resource):

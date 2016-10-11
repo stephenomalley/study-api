@@ -1,5 +1,5 @@
 from flask_restful import Resource, marshal_with, abort
-from studies_api.app import api
+from studies_api import api
 from studies_api.common.study import get_all_studies, get_study_by_id
 from studies_api.fields.study import study_list_fields, study_fields
 
@@ -28,5 +28,6 @@ class StudyList(Resource):
         pass
 
 
-api.add_resource(StudyList, '/studies', )
-api.add_resource(Study, '/studies/<int:id>')
+api.add_resource(StudyList, '/studies', endpoint="studies", methods=['GET', 'POST'])
+api.add_resource(Study, '/studies/<int:id>', endpoint="study", methods=['GET', 'POST'])
+
