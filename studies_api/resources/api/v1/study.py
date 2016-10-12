@@ -1,5 +1,5 @@
-from studies_api.api.v1.fields.study import study_list_fields, study_fields
-from studies_api.api.v1.helpers.study import get_all_studies, get_study_by_id, save_study
+from studies_api.resources.api.v1.fields.study import study_list_fields, study_fields
+from studies_api.resources.api.v1.helpers.study import get_all_studies, get_study_by_id, save_study
 from bson.errors import InvalidId
 from flask_restful import Resource, marshal_with, abort
 from flask_restful import reqparse

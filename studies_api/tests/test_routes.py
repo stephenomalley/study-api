@@ -1,7 +1,7 @@
 import unittest
 
 import mock
-from studies_api.api.v1.fields.study import study_fields
+from studies_api.resources.api.v1.fields.study import study_fields
 from flask import json
 
 

@@ -21,6 +21,6 @@ else:
     db = mock.MagicMock()
 
 
-from resources.api.v1.study import Study, StudyList
-from resources.api.v1.submission import Submission, SubmissionList
+from studies_api.resources.api.v1.study import Study, StudyList
+from studies_api.resources.api.v1.submission import Submission, SubmissionList
 
