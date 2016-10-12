@@ -1,8 +1,8 @@
 import unittest
 
 import mock
+from api.v1.fields.study import study_fields
 from flask import json
-from studies_api.fields.study import study_fields
 
 
 class TestApiMixin(object):

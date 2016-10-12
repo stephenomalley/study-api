@@ -4,6 +4,12 @@ Simple Flask app that makes use of the Flask-Restful frame work and pymongo
 to query the database.
 
 ## Run instructions
+Set up mongodb then create new database. 
+
+run `db.submissions.createIndex( { study: 1, user: 1}, { unique: true } )`
+This will stop a submission for a study having same users.
+
+
 Set env variable `MONGOHQ_URL=<mongo-db-connection>`
 then run `python runserver.py`
 
