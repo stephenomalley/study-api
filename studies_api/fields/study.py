@@ -8,7 +8,7 @@ study_fields = {
     "id": fields.String(attribute="_id"),
     "name": fields.String,
     "available_places": fields.Integer,
-    "user": fields.Integer
+    "user": fields.String
 }
 
 study_list_fields = {

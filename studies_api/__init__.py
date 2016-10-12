@@ -6,7 +6,7 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 api_blueprint = Blueprint('api', __name__)
-
+app.url_map.strict_slashes = False
 api = Api(app)
 app.register_blueprint(api_blueprint)
 
@@ -20,4 +20,6 @@ else:
     import mock
     db = mock.MagicMock()
 
-import resources.study
+
+from resources.api.v1.study import Study, StudyList
+
