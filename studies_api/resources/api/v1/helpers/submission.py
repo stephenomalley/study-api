@@ -1,4 +1,4 @@
-from api.v1.exceptions.submission import SubmissionLimitExceeded, StudyNotCreated
+from studies_api.api.v1.exceptions.submission import SubmissionLimitExceeded, StudyNotCreated
 from bson.objectid import ObjectId
 from studies_api import db
 

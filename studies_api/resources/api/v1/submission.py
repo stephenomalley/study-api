@@ -1,8 +1,8 @@
 import time
 
-from api.v1.exceptions.submission import SubmissionLimitExceeded, StudyNotCreated
-from api.v1.fields.submission import submission_list_fields, submission_fields
-from api.v1.helpers.submission import get_all_submissions, save_submission, get_submission_by_id
+from studies_api.api.v1.exceptions.submission import SubmissionLimitExceeded, StudyNotCreated
+from studies_api.api.v1.fields.submission import submission_list_fields, submission_fields
+from studies_api.api.v1.helpers.submission import get_all_submissions, save_submission, get_submission_by_id
 from bson.errors import InvalidId
 from flask_restful import Resource, marshal_with, abort
 from flask_restful import reqparse

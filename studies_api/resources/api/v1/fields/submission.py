@@ -1,4 +1,4 @@
-from api.v1.fields import link_fields
+from studies_api.api.v1.fields import link_fields
 from flask_restful import fields
 
 submission_fields = {
