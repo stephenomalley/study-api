@@ -25,15 +25,16 @@ process is up and running and you are pointing to the correct database
  Method | URI | Data | HTTP Code | Response (in JSON) |
 | ------ | --- | ---- | --------- | ------------------ |
 | GET  | /api/v1/studies/id |  | 200 | {"id": 1,"name": "test", "user":1} |
-| GET  | api/v1/studies/   |  | 200 | ["data": [{"id": 1,"name": "test", "user":1}, "links": {self: "path/studies"}] |
-
+| GET  | /api/v1/studies  |  | 200 | ["data": [{"id": 1,"name": "test", "user":1}, "links": {self: "path/studies"}] |
+| GET  | /api/v1/submissions/id |  | 200 | {"id": "fkffvfkv","name": "test", "user":1} |
+| GET  | /api/v1/submissions  |  | 200 | ["data": [{"id": "fkffvfkv","study": "23243", "user":1}, "links": {self: "path/submissions"}] |
 
 ## Submission end-points
 
 
 ##TODO
-* Add post for study
-* Add get, list, post for submission
 * Add filter params on some urls
-* Order project correctly
-* set up mongo db
+* Set up mongo db
+* Complete tests
+* Comment all code
+* Add details to ReadMe
