@@ -18,10 +18,19 @@ class Study(Resource):
             return study if study else abort(404, message="Study not found")
 
     def post(self):
-        pass
+        raise NotImplementedError("Post not supported")
+
+    def put(self):
+        raise NotImplementedError("Update of study not supported")
+
+    def delete(self):
+        raise NotImplementedError("Delete of a study not supported")
 
 
 class StudyList(Resource):
+
+    query_parser = reqparse.RequestParser()
+    query_parser.add_argument("user", type=str)
 
     parser = reqparse.RequestParser()
     parser.add_argument('name', type=str, help="The name of the Study. Should not be blank.", required=True)
@@ -30,8 +39,14 @@ class StudyList(Resource):
 
     @marshal_with(study_list_fields)
     def get(self):
+        args = self.query_parser.parse_args()
+        filter = {}
+        for key, value in args.iteritems():
+            if value:
+                filter.update({key: value})
+
         return {
-            "data": [study for study in get_all_studies()],
+            "data": [study for study in get_all_studies(filter)],
             "links": {}
         }
 

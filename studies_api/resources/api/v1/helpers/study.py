@@ -2,13 +2,14 @@ from bson.objectid import ObjectId
 from studies_api import db
 
 
-def get_all_studies():
+def get_all_studies(filter):
     """
     Retrieves all the study objects within the collection
 
+    :param filter  filter the list of studies coming back
     :return: a list of dictionaries [empty dictionary if no data in that collections
     """
-    return db.studies.find()
+    return db.studies.find(filter)
 
 
 def get_study_by_id(id):

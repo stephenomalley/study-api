@@ -231,7 +231,7 @@ class TestStudyApiList(TestApiMixin, unittest.TestCase):
             for field in study_fields.iterkeys():
                 self.assertIn(field, item, "Study object should have correct fields")
 
-        mock_studies.assert_called_once_with()
+        mock_studies.assert_called_once_with({})
 
     def test_end_point_returns_links(self):
         response = self.app.get("/api/v1/studies")
