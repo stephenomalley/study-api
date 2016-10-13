@@ -25,6 +25,7 @@ def get_study_by_id(id):
     """
     return db.studies.find_one({"_id": ObjectId(id)})
 
+
 def save_study(study):
     """
     Takes a dictionary representing a study document and persists the data to the studies collection in the
@@ -37,4 +38,3 @@ def save_study(study):
     id = db.studies.insert(study)
     study.update({"_id": id})
     return study
-

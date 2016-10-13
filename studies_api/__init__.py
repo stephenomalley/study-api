@@ -1,17 +1,17 @@
 import os
 
-from flask import Flask, Blueprint
+from flask import Flask
 from flask_restful import Api
+from flask_restful_swagger import swagger
 from pymongo import MongoClient
 
 # Creating Flask app and removing strict slashes
 app = Flask(__name__)
-api_blueprint = Blueprint('api', __name__)
-app.register_blueprint(api_blueprint)
 app.url_map.strict_slashes = False
 
 # Initialising the flask restful API c.f http://flask-restful-cn.readthedocs.io/en/0.3.4/api.html#id1
-api = Api(app)
+# wrapping in swagger for some nice api documentation
+api = swagger.docs(Api(app), apiVersion='1')
 
 
 # Checking that the environment variable is set if it isn't then we just use a mock db
@@ -29,6 +29,5 @@ else:
 
 
 # importing the resources so that the endpoints for the api are registered
-from studies_api.resources.api.v1.study import Study, StudyList
-from studies_api.resources.api.v1.submission import Submission, SubmissionList
+from studies_api.rest.v1.resources import submission, study
 

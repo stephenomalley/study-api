@@ -1,12 +1,11 @@
 import unittest
 
 import mock
-from studies_api.resources.api.v1.fields.study import study_fields
 from flask import json
+from studies_api.rest.v1.swagger_models.study import Study
 
 
 class TestApiMixin(object):
-
     def setUp(self):
         # os.environ["MONGOHQ_URL"] = "mongodb://localhost:27017/test"
         from studies_api import app as studies_api
@@ -28,8 +27,8 @@ class TestApiMixin(object):
             "user": "2"
         }
 
-class TestStudyApiPost(TestApiMixin, unittest.TestCase):
 
+class TestStudyApiPost(TestApiMixin, unittest.TestCase):
     def test_returns_status_created(self):
         response = self.app.post("/api/v1/studies", data=self._get_mock_study_post())
         self.assertEqual(201, response.status_code, "The status returned was not 201 Created")
@@ -38,7 +37,7 @@ class TestStudyApiPost(TestApiMixin, unittest.TestCase):
         content, data = self._generate_post_content()
         self.assertIn("id", content.keys(), "The jey id was not found in the returned object")
 
-    @mock.patch("studies_api.resources.api.v1.study.save_study")
+    @mock.patch("studies_api.rest.v1.resources.study.save_study")
     def test_returns_created_object_values_are_correct(self, mock_study):
         mock_study.return_value = self.get_mock_study()
         content, data = self._generate_post_content()
@@ -46,14 +45,15 @@ class TestStudyApiPost(TestApiMixin, unittest.TestCase):
             self.assertEquals(
                 value,
                 content[key],
-                "The value expected for entry {entry} did not equal [ {val} != {res}]".format(entry=key, val=value, res=content[key])
+                "The value expected for entry {entry} did not equal [ {val} != {res}]".format(entry=key, val=value,
+                                                                                              res=content[key])
             )
 
     def test_id_is_generated_on_created_object(self):
         content, data = self._generate_post_content()
         self.assertIsNotNone(content["id"], "The id returned was None")
 
-    @mock.patch("studies_api.resources.api.v1.study.save_study")
+    @mock.patch("studies_api.rest.v1.resources.study.save_study")
     def test_save_to_database_is_made(self, mock_save):
         data = self._get_mock_study_post()
         data["_id"] = "mock3r4lue"
@@ -61,7 +61,7 @@ class TestStudyApiPost(TestApiMixin, unittest.TestCase):
         content, post_data = self._generate_post_content()
         mock_save.assert_called_once_with(post_data)
 
-    @mock.patch("studies_api.resources.api.v1.study.save_study")
+    @mock.patch("studies_api.rest.v1.resources.study.save_study")
     def test_after_save_id_is_returned_in_response_and_is_not_none(self, mock_save):
         data = self._get_mock_study_post()
         data["_id"] = "mock3r4lue"
@@ -69,22 +69,24 @@ class TestStudyApiPost(TestApiMixin, unittest.TestCase):
         content, post_data = self._generate_post_content()
         self.assertEqual(content["id"], data["_id"], "The id returned was not the expected id")
 
-    @mock.patch("studies_api.resources.api.v1.study.save_study")
+    @mock.patch("studies_api.rest.v1.resources.study.save_study")
     def test_posting_with_available_places_as_string_returns_bad_request(self, mock_save):
         response = self.app.post("/api/v1/studies", data={"available_places": "henenkjk"})
-        self.assertEqual(400, response.status_code, "A bad request was not made despite passing available_places a string")
-        self.assertEqual(0, mock_save.call_count, "The save method was called meaning available places excepts a string")
+        self.assertEqual(400, response.status_code,
+                         "A bad request was not made despite passing available_places a string")
+        self.assertEqual(0, mock_save.call_count,
+                         "The save method was called meaning available places excepts a string")
 
-    @mock.patch("studies_api.resources.api.v1.study.save_study")
+    @mock.patch("studies_api.rest.v1.resources.study.save_study")
     def test_posting_with_available_places_as_string_returns_error_message(self, mock_save):
         response = self.app.post("/api/v1/studies", data={"available_places": "henenkjk"})
         content = json.loads(response.data)
         self.assertIn("message", content, "key message not found in error json")
 
-
-    @mock.patch("studies_api.resources.api.v1.study.save_study")
+    @mock.patch("studies_api.rest.v1.resources.study.save_study")
     def test_posting_with_available_places_error_message_contains_error_info(self, mock_save):
-        response = self.app.post("/api/v1/studies", data={"available_places": "henenkjk", "name": "help", "user": "87hy"})
+        response = self.app.post("/api/v1/studies",
+                                 data={"available_places": "henenkjk", "name": "help", "user": "87hy"})
         content = json.loads(response.data)
         self.assertEqual(
             "The number of places available on the study.",
@@ -92,7 +94,7 @@ class TestStudyApiPost(TestApiMixin, unittest.TestCase):
             "The returned error message was different to that expected."
         )
 
-    @mock.patch("studies_api.resources.api.v1.study.save_study")
+    @mock.patch("studies_api.rest.v1.resources.study.save_study")
     def test_posting_without_study_name_results_in_error_message(self, mock_save):
         response = self.app.post("/api/v1/studies", data={"available_places": "henenkjk", "user": "87hy"})
         content = json.loads(response.data)
@@ -102,7 +104,7 @@ class TestStudyApiPost(TestApiMixin, unittest.TestCase):
             "The returned error message was different to that expected."
         )
 
-    @mock.patch("studies_api.resources.api.v1.study.save_study")
+    @mock.patch("studies_api.rest.v1.resources.study.save_study")
     def test_posting_without_user_results_in_error_message(self, mock_save):
         response = self.app.post("/api/v1/studies", data={"available_places": "henenkjk", "name": "help"})
         content = json.loads(response.data)
@@ -145,10 +147,10 @@ class TestStudyApiGet(TestApiMixin, unittest.TestCase):
     def test_response_contains_correct_fields(self):
         response = self.app.get("/api/v1/studies/57fd369e39a63df2114a6847")
         content = json.loads(response.data)
-        for field in study_fields:
+        for field in Study.resource_fields:
             self.assertIn(field, content)
 
-    @mock.patch("studies_api.resources.api.v1.study.get_study_by_id")
+    @mock.patch("studies_api.rest.v1.resources.study.get_study_by_id")
     def test_response_body_has_correct_object(self, mock_study):
         mock_study.return_value = self.get_mock_study()
         response = self.app.get("/api/v1/studies/57fd369e39a63df2114a6847")
@@ -170,14 +172,14 @@ class TestStudyApiGet(TestApiMixin, unittest.TestCase):
         error = json.loads(response.data)
         self.assertIn("12-byte input or a 24-character hex string", error["message"])
 
-    @mock.patch("studies_api.resources.api.v1.study.get_study_by_id")
+    @mock.patch("studies_api.rest.v1.resources.study.get_study_by_id")
     def test_request_for_non_existing_study_returns_404(self, mock_study):
         mock_study.return_value = None
         response = self.app.get("/api/v1/studies/57fd369e39a63df2514a6847")
         self.assertEqual(404, response.status_code)
         mock_study.assert_called_once_with("57fd369e39a63df2514a6847")
 
-    @mock.patch("studies_api.resources.api.v1.study.get_study_by_id")
+    @mock.patch("studies_api.rest.v1.resources.study.get_study_by_id")
     def test_request_for_non_existing_study_error_response_contains_message(self, mock_study):
         mock_study.return_value = None
         response = self.app.get("/api/v1/studies/57fd369e79a63df2114a6847")
@@ -185,7 +187,7 @@ class TestStudyApiGet(TestApiMixin, unittest.TestCase):
         mock_study.assert_called_once_with("57fd369e79a63df2114a6847")
         self.assertIn("message", error)
 
-    @mock.patch("studies_api.resources.api.v1.study.get_study_by_id")
+    @mock.patch("studies_api.rest.v1.resources.study.get_study_by_id")
     def test_request_for_non_existing_study_error_response_is_well_formed(self, mock_study):
         mock_study.return_value = None
         response = self.app.get("/api/v1/studies/57fd369b39a63df2114a6847")
@@ -214,7 +216,7 @@ class TestStudyApiList(TestApiMixin, unittest.TestCase):
         data = json.loads(response.data)["data"]
         self.assertEqual(data, [])
 
-    @mock.patch("studies_api.resources.api.v1.study.get_all_studies")
+    @mock.patch("studies_api.rest.v1.resources.study.get_all_studies")
     def test_content_has_item(self, mock_studies):
         mock_studies.return_value = self.get_mock_studies()
         response = self.app.get("/api/v1/studies")
@@ -222,13 +224,13 @@ class TestStudyApiList(TestApiMixin, unittest.TestCase):
         self.assertNotEqual(data, [])
         mock_studies.assert_called_once()
 
-    @mock.patch("studies_api.resources.api.v1.study.get_all_studies")
-    def test_content_has_itest_item_in_data_list_is_correct(self, mock_studies):
+    @mock.patch("studies_api.rest.v1.resources.study.get_all_studies")
+    def test_content_item_in_data_list_is_correct(self, mock_studies):
         mock_studies.return_value = self.get_mock_studies()
         response = self.app.get("/api/v1/studies")
         data = json.loads(response.data)["data"]
         for item in data:
-            for field in study_fields.iterkeys():
+            for field in Study.resource_fields.iterkeys():
                 self.assertIn(field, item, "Study object should have correct fields")
 
         mock_studies.assert_called_once_with({})
@@ -242,6 +244,12 @@ class TestStudyApiList(TestApiMixin, unittest.TestCase):
         response = self.app.get("/api/v1/studies")
         links = json.loads(response.data)["links"]
         self.assertEqual(links, {"self": "http://localhost/api/v1/studies"})
+
+    @mock.patch("studies_api.rest.v1.resources.study.get_all_studies")
+    def test_request_params_perform_filter(self, mock_studies):
+        mock_studies.return_value = mock.MagicMock()
+        self.app.get("/api/v1/studies/?user=g94fkgr010")
+        mock_studies.assert_called_with({"user": "g94fkgr010"})
 
 
 if __name__ == '__main__':

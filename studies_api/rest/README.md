@@ -14,7 +14,7 @@ separate repositories further down the line then it would be easy to extract the
 Version 1 of the api uses pymongo to connect to the mongo db from python. Since we are using a MonogDB with simple collections there is really no need for an ORM. 
 As such there are no models created as the resource itself can handle the validation of the data, and retrieving\storing of json is all we are essentially doing at this stage.
 
-### study.py
+### Study
 
 There are two resources in `study.py` as per the standard for Flask ResftFul:
 * one for the retrieval of an individual study
@@ -69,6 +69,7 @@ Alternatively, there is an option to filter the studies by user by passing the u
 }
 ```
 
+## Submission
 
 ### Outstanding work
 * Need improve the error messages to include more detail, especially the error code, in the returned json

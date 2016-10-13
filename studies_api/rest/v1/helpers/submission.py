@@ -1,6 +1,6 @@
-from studies_api.resources.api.v1.exceptions.submission import SubmissionLimitExceeded, StudyNotCreated
 from bson.objectid import ObjectId
 from studies_api import db
+from studies_api.rest.v1.exceptions.submission import SubmissionLimitExceeded, StudyNotCreated
 
 
 def get_all_submissions(filter):
@@ -27,6 +27,7 @@ def get_submission_by_id(id):
     """
     return db.submissions.find_one({"_id": ObjectId(id)})
 
+
 def save_submission(submission):
     """
     Takes a dictionary representing a submission document and persists the data to the submissions collection in the
@@ -44,7 +45,6 @@ def save_submission(submission):
     raise SubmissionLimitExceeded("All places on study are filled")
 
 
-
 def check_submissions(study_id):
     """
     Check that a study exists and if it does check that there are places available on the study
@@ -58,7 +58,3 @@ def check_submissions(study_id):
         return existing_submissions < study["available_places"]
 
     raise StudyNotCreated("Study {0} does not exist. Please check submission is for this study".format(study_id))
-
-
-
-
