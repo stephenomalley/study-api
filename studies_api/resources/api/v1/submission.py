@@ -30,10 +30,21 @@ class SubmissionList(Resource):
     parser.add_argument("user", type=str, help="The ObjectId of the user that created the study.", required=True)
     parser.add_argument("created", type=int, help="The time study was created")
 
+    query_parser = reqparse.RequestParser()
+    query_parser.add_argument('study', type=str,)
+    query_parser.add_argument("user", type=str,)
+
+
     @marshal_with(submission_list_fields)
     def get(self):
+        args = self.query_parser.parse_args()
+        filter = {}
+        for key, value in args.iteritems():
+            if value:
+                filter.update({key: value})
+
         return {
-            "data": [study for study in get_all_submissions()],
+            "data": [study for study in get_all_submissions(filter)],
             "links": {}
         }
 

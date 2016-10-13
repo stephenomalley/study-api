@@ -3,14 +3,15 @@ from bson.objectid import ObjectId
 from studies_api import db
 
 
-def get_all_submissions():
+def get_all_submissions(filter):
     """
     Retrieves all the submission objects within the collection
 
+    :param filter json object that will filter submissions
     :return: a list of dictionaries [empty dictionary if no data in that collections
     """
 
-    return db.submissions.find()
+    return db.submissions.find(filter)
 
 
 def get_submission_by_id(id):
